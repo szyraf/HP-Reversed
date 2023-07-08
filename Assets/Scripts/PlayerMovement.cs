@@ -1,21 +1,36 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 
 public class PlayerMovement : MonoBehaviour
 {
-    private float horizontal;
-    private float vertical;
     public float playerSpeed = 50f;
 
     public Rigidbody2D rb;
+    public Weapon weapon;
+
+    Vector2 moveDirection;
+    Vector2 mousePosition;
 
     private void Update()
     {
-        horizontal = Input.GetAxisRaw("Horizontal");
-        vertical = Input.GetAxisRaw("Vertical");
+        float moveX= Input.GetAxisRaw("Horizontal");
+        float moveY = Input.GetAxisRaw("Vertical");
+
+        if (Input.GetMouseButtonDown(0))
+        {
+            weapon.Fire();
+        }
+
+        moveDirection = new Vector2(moveX, moveY).normalized;
+        mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
     }
 
     void FixedUpdate()
     {
-        rb.velocity = new Vector2 (horizontal * playerSpeed * Time.fixedDeltaTime, vertical * playerSpeed * Time.fixedDeltaTime);
+        rb.velocity = new Vector2 (moveDirection.x * playerSpeed * Time.fixedDeltaTime, moveDirection.y * playerSpeed * Time.fixedDeltaTime);
+
+        Vector2 aimDirection = mousePosition - rb.position;
+        float aimAngle= Mathf.Atan2(aimDirection.y, aimDirection.x) * Mathf.Rad2Deg - 90f;
+        rb.rotation = aimAngle;
     }
 }
