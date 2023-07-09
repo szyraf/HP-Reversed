@@ -10,7 +10,7 @@ public class Weapon : MonoBehaviour
     public Enemy shooter;
     public bool isPlayer = false;
 
-    public void Fire(float damage, float fireForce)
+    public void Fire(float damage, float fireForce, int soundType)
     {
         GameObject bullet = Instantiate(bulletPrefab, firePoint.position, firePoint.rotation);
         bullet.GetComponent<Rigidbody2D>().AddForce(firePoint.up * fireForce, ForceMode2D.Impulse);
@@ -20,6 +20,17 @@ public class Weapon : MonoBehaviour
         }
         bullet.GetComponent<Bullet>().damage = damage;
 
-        FindObjectOfType<AudioManager>().PlayOneShot("gunshot");
+        if (soundType == 0)
+        {
+            FindObjectOfType<AudioManager>().PlayOneShot("gunshot");
+        }
+        else if (soundType == 1)
+        {
+            FindObjectOfType<AudioManager>().PlayOneShot("sniper");
+        }
+        else if (soundType == 2)
+        {
+            FindObjectOfType<AudioManager>().PlayOneShot("pistol");
+        }
     }
 }

@@ -15,6 +15,7 @@ public class OnOffPathfinding : MonoBehaviour
 
     void Update()
     {
+        /*
         if (Input.GetKeyDown(KeyCode.E))
         {
             if (!isE)
@@ -35,5 +36,6 @@ public class OnOffPathfinding : MonoBehaviour
         {
             isE = false;
         }
+        */
     }
 }

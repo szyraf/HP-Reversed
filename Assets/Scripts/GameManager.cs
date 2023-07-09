@@ -8,8 +8,10 @@ using UnityEngine.SceneManagement;
 public class GameManager : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI enemiesLeftText;
-    List<Enemy> enemies = new List<Enemy>();
+    [SerializeField] TextMeshProUGUI wallsLeftText;
+    public List<Enemy> enemies = new List<Enemy>();
 
+    public DestructableTiles destructableTiles;
 
     bool gameHasEnded = false;
     public float restartDelay = 0f;
@@ -47,8 +49,19 @@ public class GameManager : MonoBehaviour
 
     void UpdateEnemiesLeftText()
     {
+        int walls = destructableTiles.GetAmountOfTiles();
         enemiesLeftText.text = $"Enemies Left: {enemies.Count}";
-        if (enemies.Count <= 0)
+        if (enemies.Count <= 0 && walls <= 0)
+        {
+            CompleteLevel();
+        }
+    }
+
+    public void UpdateWallsLeftText()
+    {
+        int walls = destructableTiles.GetAmountOfTiles();
+        wallsLeftText.text = $"Walls Left: {walls}";
+        if (enemies.Count <= 0 && walls <= 0)
         {
             CompleteLevel();
         }

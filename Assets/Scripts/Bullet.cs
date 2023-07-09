@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Tilemaps;
 
 public class Bullet : MonoBehaviour
 {
@@ -7,6 +8,11 @@ public class Bullet : MonoBehaviour
 
     void OnCollisionEnter2D(Collision2D collision)
     {
+        if (collision.gameObject.TryGetComponent<DestructableTiles>(out DestructableTiles tilemap))
+        {
+            tilemap.Hit(collision);
+        }
+
         if (collision.gameObject.TryGetComponent<Enemy>(out Enemy enemyComponent))
         {
             enemyComponent.Hit(damage);
@@ -21,6 +27,11 @@ public class Bullet : MonoBehaviour
                     shooter.TakeDamage(damage);
                 }
             }
+        }
+
+        if (collision.gameObject.TryGetComponent<Tnt>(out Tnt tnt))
+        {
+            tnt.Hit();
         }
 
         //FindObjectOfType<AudioManager>().PlayOneShot("explosion");

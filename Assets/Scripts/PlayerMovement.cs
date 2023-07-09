@@ -18,7 +18,7 @@ public class PlayerMovement : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0))
         {
-            weapon.Fire(1, 5f);
+            weapon.Fire(1, 5f, 0);
         }
 
         moveDirection = new Vector2(moveX, moveY).normalized;

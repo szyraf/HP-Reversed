@@ -2,6 +2,7 @@ using System.Collections;
 using System;
 using UnityEngine;
 using Unity.Profiling;
+using Pathfinding;
 
 public class Enemy : MonoBehaviour
 {
@@ -18,13 +19,16 @@ public class Enemy : MonoBehaviour
     public Animator animator;
 
     public Transform playerTransform;
+    public Transform target2;
 
     public Weapon weapon;
 
     private static readonly System.Random random = new System.Random();
 
     private int count = 15;
-    private Quaternion randomRotation; 
+    private Quaternion randomRotation;
+
+    public AIDestinationSetter destinationSetter;
 
     private void Awake()
     {
@@ -45,7 +49,10 @@ public class Enemy : MonoBehaviour
         {
             maxHealth = 1f;
         }
-
+        else if (type == 3)
+        {
+            maxHealth = 1f;
+        }
 
         health = maxHealth;
         healthBar.UpdateHealthBar(health, maxHealth);
@@ -59,11 +66,11 @@ public class Enemy : MonoBehaviour
             while (true)
             {
                 yield return new WaitForSeconds(3f * GenerateRandomNumber(0, 1));
-                weapon.Fire(1, 5f);
+                weapon.Fire(1, 5f, 0);
                 yield return new WaitForSeconds(0.05f);
-                weapon.Fire(1, 5f);
+                weapon.Fire(1, 5f, 0);
                 yield return new WaitForSeconds(0.05f);
-                weapon.Fire(1, 5f);
+                weapon.Fire(1, 5f, 0);
             }
         }
         else if(type == 1)
@@ -71,7 +78,7 @@ public class Enemy : MonoBehaviour
             while (true)
             {
                 yield return new WaitForSeconds(3f * GenerateRandomNumber(0.7f, 1));
-                weapon.Fire(3, 30f);
+                weapon.Fire(3, 30f, 1);
             }
         }
         if (type == 2)
@@ -79,7 +86,17 @@ public class Enemy : MonoBehaviour
             while (true)
             {
                 yield return new WaitForSeconds(0.66f);
-                weapon.Fire(0.5f, 1.5f);
+                weapon.Fire(0.5f, 1.5f, 2);
+            }
+        }
+        if (type == 3)
+        {
+            while (true)
+            {
+                yield return new WaitForSeconds(3f * GenerateRandomNumber(0, 1));
+                weapon.Fire(1, 5f, 0);
+                yield return new WaitForSeconds(0.05f);
+                weapon.Fire(1, 5f, 0);
             }
         }
     }
@@ -110,9 +127,19 @@ public class Enemy : MonoBehaviour
 
     void Update()
     {
+        if (playerTransform == null)
+        {
+            if (target2 != null)
+            {
+                playerTransform = target2;
+                destinationSetter.target = target2;
+            }
+        }
+
         Vector2 direction = playerTransform.position - transform.position;
         float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg - 90f;
         Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+
         if (type == 0)
         {
             transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * 2f);
@@ -125,7 +152,7 @@ public class Enemy : MonoBehaviour
         {
             if (count >= 40)
             {
-                randomRotation = Quaternion.Euler(0, 0, (int) GenerateRandomNumber(0, 360));
+                randomRotation = Quaternion.Euler(0, 0, (int)GenerateRandomNumber(0, 360));
                 count = 0;
             }
             else
@@ -135,6 +162,10 @@ public class Enemy : MonoBehaviour
 
             transform.rotation = Quaternion.Slerp(transform.rotation, randomRotation, Time.deltaTime * 6f);
         }
-
+        if (type == 3)
+        {
+            transform.rotation = Quaternion.Slerp(transform.rotation, rotation, Time.deltaTime * 0.8f);
+        }
+        
     }
 }

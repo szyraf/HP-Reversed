@@ -3,7 +3,9 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Destructable
+  - Bullet
   layers:
   - Default
   - TransparentFX
@@ -14,6 +16,10 @@ TagManager:
   - 
   - 
   - Walls
+  - Destructable
+  - 
+  - 
+  - TNT
   - 
   - 
   - 
@@ -29,12 +35,8 @@ TagManager:
   - 
   - 
   - 
-  - 
-  - 
-  - 
-  - 
-  - 
-  - 
+  - test
+  - background
   - 
   - 
   m_SortingLayers:
