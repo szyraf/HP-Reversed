@@ -3,12 +3,13 @@ using UnityEngine;
 public class Bullet : MonoBehaviour
 {
     public Enemy shooter;
+    public float damage;
 
     void OnCollisionEnter2D(Collision2D collision)
     {
         if (collision.gameObject.TryGetComponent<Enemy>(out Enemy enemyComponent))
         {
-            enemyComponent.Hit(1);
+            enemyComponent.Hit(damage);
         }
 
         if (collision.gameObject.TryGetComponent<PlayerMovement>(out PlayerMovement playerComponent))
@@ -17,7 +18,7 @@ public class Bullet : MonoBehaviour
             {
                 if (shooter != null)
                 {
-                    shooter.TakeDamage(1);
+                    shooter.TakeDamage(damage);
                 }
             }
         }

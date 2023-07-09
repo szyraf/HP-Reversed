@@ -22,6 +22,9 @@ public class PlayerHealthBar : MonoBehaviour
 
     public void TakeDamage(float damageAmount)
     {
+        Debug.Log("aaaaaaaaaaaaaaaaa");
+        Debug.Log(damageAmount);
+
         health -= damageAmount;
         this.UpdateHealthBar(health, maxHealth);
         if (health <= 0)

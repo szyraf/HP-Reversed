@@ -32,6 +32,11 @@ public class GameManager : MonoBehaviour
         UpdateEnemiesLeftText();
     }
 
+    private void Start()
+    {
+        Application.targetFrameRate = 60;
+    }
+
     void HandleEnemyDefeated(Enemy enemy)
     {
         if (enemies.Remove(enemy))
@@ -51,6 +56,7 @@ public class GameManager : MonoBehaviour
 
     public void CompleteLevel()
     {
+        gameHasEnded = true;
         Debug.Log("LEVEL WON!");
         completeLevelUI.SetActive(true);
     }
@@ -69,5 +75,15 @@ public class GameManager : MonoBehaviour
     void Restart()
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
+    }
+
+    private void Update()
+    {
+        if (!gameHasEnded)
+        {
+            if (Input.GetKeyDown(KeyCode.R)) {
+                Restart();
+            }
+        }
     }
 }
