@@ -18,4 +18,4 @@ R - restart level
 
 ## Screenshots
 
-<img scr="screenshots/s1.png" />
+<img src="screenshots/s1.png" />
